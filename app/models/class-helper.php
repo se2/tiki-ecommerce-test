@@ -46,6 +46,7 @@ class Helper {
 			echo 'Subtotal: $' . $subtotal . '<br>';
 			echo 'Discount: -$' . $discount . '<br>';
 			echo 'Total: $' . ( $subtotal - $discount ) . '<br><br>';
+			echo '<hr>';
 		}
 	}
 

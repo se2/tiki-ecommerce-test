@@ -20,7 +20,7 @@ $ip_black  = new Product( 'P-IPBLK2', 'iPhone Black', 'Black', 899 );
 // Test case 1: disqualified for discount.
 // Assume user id is unique.
 // Create user John Doe.
-$john = new User( 'U-0001', 'John Doe 1', 'john.doe@example.com', new Cart(), 'GOLD' );
+$john = new User( 'U-01', 'John Doe 1', 'john.doe@example.com', new Cart(), 'GOLD' );
 
 // Create new helper instance.
 $helper = new Helper();
@@ -41,17 +41,16 @@ $promotion = new Promotion( $date_from, $date_to, $groups, $colors, $subtotal, $
 
 $helper->print_cart( $john, $promotion );
 
-echo '<hr>';
-
 // Test case 2: qualified for discount.
 // Create user Janice Allen.
-$janice = new User( 'U-0002', 'Janice Allen', 'janice.allen@example.com', new Cart(), 'SILVER' );
+$janice = new User( 'U-02', 'Janice Allen', 'janice.allen@example.com', new Cart(), 'SILVER' );
 
 // Sample cart actions.
 $janice->get_cart()->add_product( $ip_black );
 $janice->get_cart()->add_product( $ip_black );
 $janice->get_cart()->add_product( $ip_silver );
 
+// Append 'SILVER' group to promotion rule.
 $promotion->set_user_group( 'SILVER' );
 
 $helper->print_cart( $janice, $promotion );
