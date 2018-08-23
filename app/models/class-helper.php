@@ -34,19 +34,26 @@ class Helper {
 			$products = $user->get_cart()->get_products();
 			$ids      = $user->get_cart()->get_ids();
 
-			echo '<b>User: ' . $user->get_name() . '</b><br>';
-			echo 'Cart items:<br>';
-			foreach ( $ids as $key => $id ) {
-				$product = $products[ $id ]['product'];
-				$qty     = $products[ $id ]['qty'];
-				echo $product->get_name() . ' (x' . $qty . ')' . '<br>';
+			echo '<b>User: ' . $user->get_name() . '</b><br><br>';
+			if ( ! empty( $products ) ) {
+				echo 'Cart items:<br>';
+				echo '<ul>';
+				foreach ( $ids as $key => $id ) {
+					$product = $products[ $id ]['product'];
+					$qty     = $products[ $id ]['qty'];
+					echo '<li>' . $product->get_name() . ' (x' . $qty . ')' . '</li>';
+				}
+				echo '</ul>';
+				// Output cart total and discount.
+				echo '<br>';
+				echo 'Subtotal: $' . $subtotal . '<br>';
+				echo 'Discount: -$' . $discount . '<br>';
+				echo 'Total: $' . ( $subtotal - $discount ) . '<br><br>';
+			} else {
+				echo 'Empty cart';
 			}
-			// Output cart total and discount.
-			echo '<br>';
-			echo 'Subtotal: $' . $subtotal . '<br>';
-			echo 'Discount: -$' . $discount . '<br>';
-			echo 'Total: $' . ( $subtotal - $discount ) . '<br><br>';
 			echo '<hr>';
+			echo '<br>';
 		}
 	}
 

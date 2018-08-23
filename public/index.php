@@ -54,3 +54,8 @@ $janice->get_cart()->add_product( $ip_silver );
 $promotion->set_user_group( 'SILVER' );
 
 $helper->print_cart( $janice, $promotion );
+
+// Test case 3: empty cart.
+$no_user   = new User( 'U-03', 'John Doe 2', 'no.email@example.com', new Cart(), 'UNREGISTER' );
+
+$helper->print_cart( $no_user, $promotion );
