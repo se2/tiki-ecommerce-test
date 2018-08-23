@@ -29,14 +29,14 @@ class Promotion {
 	/**
 	 * Approved user's group
 	 *
-	 * @var String
+	 * @var Array
 	 */
 	protected $user_group;
 
 	/**
 	 * Approved product's color
 	 *
-	 * @var String
+	 * @var Array
 	 */
 	protected $color;
 
@@ -57,22 +57,30 @@ class Promotion {
 	/**
 	 * Constructor
 	 *
-	 * @param String  $date_from Promotion start date.
-	 * @param String  $date_to Promotion end date.
-	 * @param String  $user_group Promotion approved user's group.
-	 * @param String  $color Promotion approved product's color.
-	 * @param Integer $subtotal Promotion approved subtotal.
-	 * @param Integer $discount Promotion approved discount.
+	 * @param String       $date_from Promotion start date.
+	 * @param String       $date_to Promotion end date.
+	 * @param String|Array $user_group Promotion approved user's group.
+	 * @param String|Array $color Promotion approved product's color.
+	 * @param Integer      $subtotal Promotion approved subtotal.
+	 * @param Integer      $discount Promotion approved discount.
 	 */
-	public function __construct( $date_from = null, $date_to = null, $user_group = 'UNREGISTER', $color = null, $subtotal = null, $discount = 0 ) {
-		$this->date_from  = $date_from;
-		$this->date_to    = $date_to;
-		$this->user_group = $user_group;
-		$this->color      = $color;
-		$this->subtotal   = $subtotal;
-		$this->discount   = $discount;
+	public function __construct( $date_from = null, $date_to = null, $user_group = array(), $color = array(), $subtotal = null, $discount = 0 ) {
+		$this->date_from = $date_from;
+		$this->date_to   = $date_to;
+		$this->subtotal  = $subtotal;
+		$this->discount  = $discount;
 		if ( $this->date_to < $this->date_from ) {
 			$this->date_to = $this->date_from;
+		}
+		if ( is_array( $user_group ) ) {
+			$this->user_group = $user_group;
+		} else {
+			$this->user_group[] = $user_group;
+		}
+		if ( is_array( $color ) ) {
+			$this->color = $color;
+		} else {
+			$this->color[] = $color;
 		}
 	}
 
@@ -122,11 +130,15 @@ class Promotion {
 	/**
 	 * Promotion user's group setter
 	 *
-	 * @param String $user_group Promotion date to.
+	 * @param String|Array $user_group Promotion approved user's groups.
 	 */
 	public function set_user_group( $user_group ) {
 		if ( $user_group ) {
-			$this->user_group = $user_group;
+			if ( is_array( $user_group ) ) {
+				$this->user_group = $user_group;
+			} else {
+				$this->user_group[] = $user_group;
+			}
 		}
 	}
 
@@ -140,11 +152,15 @@ class Promotion {
 	/**
 	 * Promotion product's color setter
 	 *
-	 * @param String $color Promotion date to.
+	 * @param String|Array $color Promotion approved colors.
 	 */
 	public function set_color( $color ) {
 		if ( $color ) {
-			$this->color = $color;
+			if ( is_array( $color ) ) {
+				$this->color = $color;
+			} else {
+				$this->color[] = $color;
+			}
 		}
 	}
 
@@ -193,7 +209,7 @@ class Promotion {
 		if ( $user ) {
 			$subtotal = 0;
 
-			if ( $user->get_group() !== $this->user_group ) {
+			if ( ! in_array( $user->get_group(), $this->user_group, true ) ) {
 				return 0;
 			}
 			// Validate today against promotion period.
@@ -204,7 +220,7 @@ class Promotion {
 				// Iterate through each items in shooping cart associated with user.
 				foreach ( $ids as $key => $id ) {
 					$product = $products[ $id ]['product'];
-					if ( $product->get_color() === $this->color ) {
+					if ( in_array( $product->get_color(), $this->color, true ) ) {
 						$subtotal = $subtotal + ( $product->get_price() * $products[ $id ]['qty'] );
 					}
 				}

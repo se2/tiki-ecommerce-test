@@ -14,3 +14,4 @@ require_once 'models/class-product.php';
 require_once 'models/class-cart.php';
 require_once 'models/class-user.php';
 require_once 'models/class-promotion.php';
+require_once 'models/class-helper.php';

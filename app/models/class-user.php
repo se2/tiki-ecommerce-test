@@ -68,6 +68,7 @@ class User {
 		$this->name  = $name;
 		$this->email = $email;
 		$this->cart  = $cart ? $cart : new Cart();
+		$this->cart->set_user_id( $this->get_id() );
 		$this->group = in_array( $group, $this->groups, true ) ? $group : 'UNREGISTER';
 	}
 
@@ -154,6 +155,9 @@ class User {
 	 * User Cart getter
 	 */
 	public function get_cart() {
+		if ( ! $this->cart ) {
+			return new Cart();
+		}
 		return $this->cart;
 	}
 
@@ -165,6 +169,7 @@ class User {
 	public function set_cart( $cart ) {
 		if ( $cart ) {
 			$this->cart = $cart;
+			$this->cart->set_user_id( $this->get_id() );
 		}
 	}
 

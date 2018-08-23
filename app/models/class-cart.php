@@ -35,15 +35,42 @@ class Cart {
 	protected $subtotal;
 
 	/**
+	 * Cart associated user id
+	 *
+	 * @var String
+	 */
+	protected $user_id;
+
+	/**
 	 * Constructor
 	 *
+	 * @param String  $user_id Shopping cart associated user id.
 	 * @param Array   $products Shopping cart products.
 	 * @param Integer $subtotal Shopping cart products subtotal.
 	 */
-	public function __construct( $products = array(), $subtotal = 0 ) {
+	public function __construct( $user_id = null, $products = array(), $subtotal = 0 ) {
+		$this->user_id  = $user_id;
 		$this->products = $products;
 		$this->ids      = empty( $this->products ) ? array() : array_keys( $this->products );
 		$this->subtotal = $subtotal;
+	}
+
+	/**
+	 * Cart user_id getter
+	 */
+	public function get_user_id() {
+		return $this->user_id;
+	}
+
+	/**
+	 * Cart user_id setter
+	 *
+	 * @param User $user_id User id.
+	 */
+	public function set_user_id( $user_id ) {
+		if ( $user_id ) {
+			$this->user_id = $user_id;
+		}
 	}
 
 	/**
